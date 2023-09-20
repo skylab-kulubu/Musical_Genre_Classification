@@ -102,7 +102,7 @@ def process_genres(genre_array,genre_name,window_type='hamming') :
     
     for idx,genre in enumerate(genre_array):  
         stftMatrix = ShortFourierTransform(genre,1024,0.2,window_type=window_type) 
-        spectrogram_data_amplitude = np.abs(stftMatrix)
+        spectrogram_data_amplitude = np.angle(stftMatrix)
         plt.figure(figsize=(8, 6))  # İsteğe bağlı olarak figür boyutunu ayarlayabilirsiniz
         plt.imshow(spectrogram_data_amplitude, cmap='viridis')  # 'viridis' renk haritasını kullanabilirsiniz, başka haritalar da mevcuttur
     
@@ -144,16 +144,16 @@ def Main():
     rock = load_from_folder('Data\genres\\rock')   
     print('rock okey')
     
-    process_genres(blues,'blues')
-    process_genres(classical,'classical')
+    #process_genres(blues,'blues')
+    #process_genres(classical,'classical')
     process_genres(disco,'disco') 
-    process_genres(rock,'rock') 
+    #process_genres(rock,'rock') 
     process_genres(metal,'metal') 
-    process_genres(pop,'pop') 
-    process_genres(reggae,'reggae') 
-    process_genres(jazz,'jazz')
-    process_genres(country,'country')
-    process_genres(hiphop,'hiphop')
+    #process_genres(pop,'pop') 
+    #process_genres(reggae,'reggae') 
+    #process_genres(jazz,'jazz')
+    #process_genres(country,'country')
+    #process_genres(hiphop,'hiphop')
 
     print("Resimler doğru bir şekilde dosyalara çıkıldı.") 
 
