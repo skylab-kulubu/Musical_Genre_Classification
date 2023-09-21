@@ -101,6 +101,8 @@ def plot_spectrogram(magnitude_spectrogram, hop_size, sample_rate):
 def process_genres(genre_array,genre_name,window_type='hamming') : 
     
     for idx,genre in enumerate(genre_array):  
+        if idx > 99 : 
+             genre = genre[:,0]
         stftMatrix = ShortFourierTransform(genre,1024,0.2,window_type=window_type) 
         spectrogram_data_amplitude = np.angle(stftMatrix)
         plt.figure(figsize=(8, 6))  # İsteğe bağlı olarak figür boyutunu ayarlayabilirsiniz
@@ -145,10 +147,10 @@ def Main():
     print('rock okey')
     
     #process_genres(blues,'blues')
-    #process_genres(classical,'classical')
-    process_genres(disco,'disco') 
-    #process_genres(rock,'rock') 
-    process_genres(metal,'metal') 
+    process_genres(classical,'classical')
+    #process_genres(disco,'disco') 
+    process_genres(rock,'rock') 
+    #process_genres(metal,'metal') 
     #process_genres(pop,'pop') 
     #process_genres(reggae,'reggae') 
     #process_genres(jazz,'jazz')
