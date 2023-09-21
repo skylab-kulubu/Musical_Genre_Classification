@@ -4,7 +4,8 @@ from PIL import Image as im
 from scipy.io import wavfile  
 import os   
 from scipy import signal 
-import itertools
+import itertools 
+import csv
 
 
 def load_from_folder(folder_path):  
@@ -96,7 +97,62 @@ def plot_spectrogram(magnitude_spectrogram, hop_size, sample_rate):
     plt.title('Magnitude Spectrogram')
     plt.xlabel('Time (s)')
     plt.ylabel('Frequency (Hz)')
-    plt.show() 
+    plt.show()
+
+def calculate_features(stft_matrix):
+    num_windows = stft_matrix.shape[1]
+    num_bins = stft_matrix.shape[0]
+    freq_axis = np.arange(num_bins)
+    features = []
+
+    for window_idx in range(num_windows):
+        stft_window = stft_matrix[:, window_idx]
+        power = np.sum(np.abs(stft_window) ** 2) / stft_window.size
+        freq_avg = np.average(freq_axis, weights=np.abs(stft_window))
+        ampl_avg = np.average(np.abs(stft_window))
+        features.append([power, freq_avg, ampl_avg])
+    return features 
+
+def genres_to_csv(genres_array,genre_name,window_type='hamming') : 
+    features_genre = []
+    for idx,genre in enumerate(genres_array): 
+        if idx > 99 : 
+            break
+        if idx == 54 and genre_name == 'classical': 
+            continue
+        print(idx,". işlem yapılıyor. ")
+        stft_matrix = ShortFourierTransform(signal=genre,window_size=1024,overlap_ratio=0.2,window_type=window_type)
+        features = calculate_features(stft_matrix=stft_matrix) 
+        array = np.array(features)  
+        mean_values = np.mean(array, axis=0)
+        std_values = np.std(array, axis=0)
+        median_values = np.median(array, axis=0) 
+
+        
+        features_dict = {
+        'Power_mean': mean_values[0],
+        'Amplitude_mean': mean_values[1],
+        'Weighted_Mean_Frequency_mean': mean_values[2], 
+        'Power_std': std_values[0],
+        'Amplitude_std': std_values[1],
+        'Weighted_Mean_Frequency_std': std_values[2],  
+        'Power_median': median_values[0],
+        'Amplitude_median': median_values[1],
+        'Weighted_Mean_Frequency_median': median_values[2], 
+        'Genre': genre
+        } 
+        features_genre.append(features_dict)
+    
+    csv_file = f'Data\FeaturesCsv\\{genre_name}_{window_type}.csv' 
+    
+    # Get the keys from the first entry in the features list
+    keys = list(features_genre[0].keys())
+
+    # Save the features to the CSV file
+    with open(csv_file, 'w', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=keys)
+        writer.writeheader()
+        writer.writerows(features_genre) 
 
 def process_genres(genre_array,genre_name,window_type='hamming') : 
     
@@ -146,17 +202,34 @@ def Main():
     rock = load_from_folder('Data\genres\\rock')   
     print('rock okey')
     
-    #process_genres(blues,'blues')
+    #genres_to_csv(blues,'blues')
+    genres_to_csv(classical,'classical')
+    #genres_to_csv(disco,'disco') 
+    genres_to_csv(rock,'rock') 
+    genres_to_csv(metal,'metal') 
+    #genres_to_csv(pop,'pop') 
+    #genres_to_csv(reggae,'reggae') 
+    #genres_to_csv(jazz,'jazz')
+    #genres_to_csv(country,'country')
+    #genres_to_csv(hiphop,'hiphop')
+
+    """ 
+    process_genres(blues,'blues')
     process_genres(classical,'classical')
-    #process_genres(disco,'disco') 
+    process_genres(disco,'disco') 
     process_genres(rock,'rock') 
-    #process_genres(metal,'metal') 
-    #process_genres(pop,'pop') 
-    #process_genres(reggae,'reggae') 
-    #process_genres(jazz,'jazz')
-    #process_genres(country,'country')
-    #process_genres(hiphop,'hiphop')
+    process_genres(metal,'metal') 
+    process_genres(pop,'pop') 
+    process_genres(reggae,'reggae') 
+    process_genres(jazz,'jazz')
+    process_genres(country,'country')
+    process_genres(hiphop,'hiphop')
 
     print("Resimler doğru bir şekilde dosyalara çıkıldı.") 
+    """ 
+
+   
+
+    print('Csv dosyaları başarılı oluştu')
 
 Main()
