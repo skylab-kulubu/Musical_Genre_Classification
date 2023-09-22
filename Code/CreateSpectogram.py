@@ -10,7 +10,8 @@ import csv
 
 def load_from_folder(folder_path):  
     songs = [] 
-    for filename in os.listdir(folder_path): 
+    for idx,filename in enumerate(os.listdir(folder_path)):  
+                print(idx,'.  patlamadı.')
                 sample_rate , song = wavfile.read(os.path.join(folder_path,filename)) 
                 if song is not None:
                     songs.append(song) 
@@ -177,7 +178,7 @@ def process_genres(genre_array,genre_name,window_type='hamming') :
         
 
 def Main():  
-    
+    """
     blues= load_from_folder('Data\genres\\blues')  
     print('blues okey')
     
@@ -187,9 +188,7 @@ def Main():
     disco= load_from_folder('Data\genres\\disco') 
     print('disco okey')
 
-    #hiphop = load_from_folder('Data\genres\\hiphop')   
-    #print('hiphop okey')
-
+    
     metal = load_from_folder('Data\genres\\metal')   
     print('metal okey')
 
@@ -206,7 +205,12 @@ def Main():
     print('reggea okey')
    
     rock = load_from_folder('Data\genres\\rock')   
-    print('rock okey')
+    print('rock okey') 
+    """ 
+
+    hiphop = load_from_folder('Data\genres\\hiphop')   
+    print('hiphop okey')
+
     
 
     #process_genres(blues,'blues')
@@ -216,9 +220,9 @@ def Main():
     #process_genres(metal,'metal') 
     #process_genres(pop,'pop') 
     #process_genres(reggae,'reggae') 
-    process_genres(jazz,'jazz')
-    process_genres(country,'country')
-    #process_genres(hiphop,'hiphop')
+    #process_genres(jazz,'jazz')
+    #process_genres(country,'country')
+    process_genres(hiphop,'hiphop')
 
     print("Resimler doğru bir şekilde dosyalara çıkıldı.")   
     
