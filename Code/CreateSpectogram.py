@@ -165,7 +165,7 @@ def process_genres(genre_array,genre_name,window_type='hamming') :
         plt.imshow(spectrogram_data_amplitude, cmap='viridis')  # 'viridis' renk haritasını kullanabilirsiniz, başka haritalar da mevcuttur
     
         # Spektrogramu bir dosyaya kaydetmek için:
-        plt.savefig(f'Spectograms\genres\{genre_name}\\{genre_name}_{idx}.jpg', bbox_inches='tight', dpi=300)  # 'spectrogram.png' adlı bir dosyaya kaydedin
+        plt.savefig(f'Spectograms\PhaseSpectograms\genres\{genre_name}\\{genre_name}_{idx}.jpg', bbox_inches='tight', dpi=300)  # 'spectrogram.png' adlı bir dosyaya kaydedin
         plt.close()
         print(f"{idx}. işlem sonlandı")
         
@@ -181,7 +181,7 @@ def Main():
     disco= load_from_folder('Data\genres\\disco') 
     print('disco okey')
 
-    hiphop = load_from_folder('Data\genres\\hiphop')   
+    #hiphop = load_from_folder('Data\genres\\hiphop')   
     print('hiphop okey')
 
     metal = load_from_folder('Data\genres\\metal')   
@@ -202,6 +202,21 @@ def Main():
     rock = load_from_folder('Data\genres\\rock')   
     print('rock okey')
     
+
+    #process_genres(blues,'blues')
+    #process_genres(classical,'classical')
+    #process_genres(disco,'disco') 
+    #process_genres(rock,'rock') 
+    #process_genres(metal,'metal') 
+    #process_genres(pop,'pop') 
+    process_genres(reggae,'reggae') 
+    process_genres(jazz,'jazz')
+    process_genres(country,'country')
+    process_genres(hiphop,'hiphop')
+
+    print("Resimler doğru bir şekilde dosyalara çıkıldı.")   
+    
+    """ 
     #genres_to_csv(blues,'blues')
     genres_to_csv(classical,'classical')
     #genres_to_csv(disco,'disco') 
@@ -211,25 +226,12 @@ def Main():
     #genres_to_csv(reggae,'reggae') 
     #genres_to_csv(jazz,'jazz')
     #genres_to_csv(country,'country')
-    #genres_to_csv(hiphop,'hiphop')
-
-    """ 
-    process_genres(blues,'blues')
-    process_genres(classical,'classical')
-    process_genres(disco,'disco') 
-    process_genres(rock,'rock') 
-    process_genres(metal,'metal') 
-    process_genres(pop,'pop') 
-    process_genres(reggae,'reggae') 
-    process_genres(jazz,'jazz')
-    process_genres(country,'country')
-    process_genres(hiphop,'hiphop')
-
-    print("Resimler doğru bir şekilde dosyalara çıkıldı.") 
+    #genres_to_csv(hiphop,'hiphop') 
+    print('Csv dosyaları başarılı oluştu')
     """ 
 
    
 
-    print('Csv dosyaları başarılı oluştu')
+    
 
 Main()
