@@ -116,8 +116,9 @@ def calculate_features(stft_matrix):
 def genres_to_csv(genres_array,genre_name,window_type='hamming') : 
     features_genre = []
     for idx,genre in enumerate(genres_array): 
-        if idx > 99 : 
-            break
+        stft_matrix = ShortFourierTransform(signal=genre,window_size=1024,overlap_ratio=0.2,window_type=window_type)
+        if idx < 23 and genre_name == 'reggea': 
+            stft_matrix = stft_matrix
         if idx == 54 and genre_name == 'classical': 
             continue
         print(idx,". işlem yapılıyor. ")
@@ -155,17 +156,22 @@ def genres_to_csv(genres_array,genre_name,window_type='hamming') :
         writer.writerows(features_genre) 
 
 def process_genres(genre_array,genre_name,window_type='hamming') : 
-    
-    for idx,genre in enumerate(genre_array):  
-        if idx > 99 : 
-             genre = genre[:,0]
-        stftMatrix = ShortFourierTransform(genre,1024,0.2,window_type=window_type) 
-        spectrogram_data_amplitude = np.angle(stftMatrix)
-        plt.figure(figsize=(8, 6))  # İsteğe bağlı olarak figür boyutunu ayarlayabilirsiniz
-        plt.imshow(spectrogram_data_amplitude, cmap='viridis')  # 'viridis' renk haritasını kullanabilirsiniz, başka haritalar da mevcuttur
-    
-        # Spektrogramu bir dosyaya kaydetmek için:
-        plt.savefig(f'Spectograms\PhaseSpectograms\genres\{genre_name}\\{genre_name}_{idx}.jpg', bbox_inches='tight', dpi=300)  # 'spectrogram.png' adlı bir dosyaya kaydedin
+    print(genre_name)
+    for idx,genre in enumerate(genre_array): 
+
+        if idx > 99 and genre_name !='jazz' : 
+            genre = genre[:,0]  
+
+        if genre_name =='jazz' and idx > 98: 
+            genre = genre[:,0]
+
+        stftMatrix = ShortFourierTransform(genre,1024,0.2,window_type=window_type)
+        spectrogram_data_amplitude = np.angle(stftMatrix) 
+        spectrogram_data_amplitude = spectrogram_data_amplitude[0:1024,0:720]
+
+        plt.figure(figsize=(8, 6))  
+        plt.imshow(spectrogram_data_amplitude, cmap='viridis')  
+        plt.savefig(f'Spectograms\PhaseSpectograms\genres\{genre_name}\\{genre_name}_{idx}.jpg', bbox_inches='tight', dpi=300)  
         plt.close()
         print(f"{idx}. işlem sonlandı")
         
@@ -182,7 +188,7 @@ def Main():
     print('disco okey')
 
     #hiphop = load_from_folder('Data\genres\\hiphop')   
-    print('hiphop okey')
+    #print('hiphop okey')
 
     metal = load_from_folder('Data\genres\\metal')   
     print('metal okey')
@@ -209,10 +215,10 @@ def Main():
     #process_genres(rock,'rock') 
     #process_genres(metal,'metal') 
     #process_genres(pop,'pop') 
-    process_genres(reggae,'reggae') 
+    #process_genres(reggae,'reggae') 
     process_genres(jazz,'jazz')
     process_genres(country,'country')
-    process_genres(hiphop,'hiphop')
+    #process_genres(hiphop,'hiphop')
 
     print("Resimler doğru bir şekilde dosyalara çıkıldı.")   
     
