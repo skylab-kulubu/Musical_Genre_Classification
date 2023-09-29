@@ -11,7 +11,6 @@ import csv
 def load_from_folder(folder_path):  
     songs = [] 
     for idx,filename in enumerate(os.listdir(folder_path)):  
-                print(idx,'.  patlamadı.')
                 sample_rate , song = wavfile.read(os.path.join(folder_path,filename)) 
                 if song is not None:
                     songs.append(song) 
@@ -159,7 +158,7 @@ def genres_to_csv(genres_array,genre_name,window_type='hamming') :
 def process_genres(genre_array,genre_name,window_type='hamming') : 
     print(genre_name)
     for idx,genre in enumerate(genre_array): 
-
+        genre = genre[:,0]
         if idx > 99 and genre_name !='jazz' : 
             genre = genre[:,0]  
 
@@ -169,59 +168,59 @@ def process_genres(genre_array,genre_name,window_type='hamming') :
         stftMatrix = ShortFourierTransform(genre,1024,0.2,window_type=window_type)
         spectrogram_data_amplitude = np.angle(stftMatrix) 
         spectrogram_data_amplitude = spectrogram_data_amplitude[0:1024,0:720]
-
+        
         plt.figure(figsize=(8, 6))  
         plt.imshow(spectrogram_data_amplitude, cmap='viridis')  
-        plt.savefig(f'Spectograms\PhaseSpectograms\genres\{genre_name}\\{genre_name}_{idx}.jpg', bbox_inches='tight', dpi=300)  
+        plt.savefig(f'Spectograms\Test\genres\{genre_name}\\{genre_name}{idx}.jpg', bbox_inches='tight', dpi=300)  
         plt.close()
         print(f"{idx}. işlem sonlandı")
         
 
 def Main():  
-    """
-    blues= load_from_folder('Data\genres\\blues')  
+    
+    blues= load_from_folder('Data\Test\model_test\\blues_wav')  
     print('blues okey')
     
-    classical = load_from_folder('Data\genres\\classical')  
+    classical = load_from_folder('Data\Test\model_test\\classical_wav')  
     print('classic okey')
 
-    disco= load_from_folder('Data\genres\\disco') 
+    disco= load_from_folder('Data\Test\model_test\\disco_wav') 
     print('disco okey')
 
     
-    metal = load_from_folder('Data\genres\\metal')   
+    metal = load_from_folder('Data\Test\model_test\\metal_wav')   
     print('metal okey')
 
-    country = load_from_folder('Data\genres\\country') 
+    country = load_from_folder('Data\Test\model_test\\country_wav') 
     print('country okey')
     
-    jazz = load_from_folder('Data\genres\\jazz')  
+    jazz = load_from_folder('Data\Test\model_test\\jazz_wav')  
     print('jazz okey')
 
-    pop= load_from_folder('Data\genres\\pop')  
+    pop= load_from_folder('Data\Test\model_test\\pop_wav')  
     print('pop okey')
    
-    reggae = load_from_folder('Data\genres\\reggae')  
+    reggae = load_from_folder('Data\Test\model_test\\reggae_wav')  
     print('reggea okey')
    
-    rock = load_from_folder('Data\genres\\rock')   
+    rock = load_from_folder('Data\Test\model_test\\rock_wav')   
     print('rock okey') 
-    """ 
 
-    hiphop = load_from_folder('Data\genres\\hiphop')   
+
+    hiphop = load_from_folder('Data\Test\model_test\\Hiphop_wav')   
     print('hiphop okey')
 
     
 
-    #process_genres(blues,'blues')
-    #process_genres(classical,'classical')
-    #process_genres(disco,'disco') 
-    #process_genres(rock,'rock') 
-    #process_genres(metal,'metal') 
-    #process_genres(pop,'pop') 
-    #process_genres(reggae,'reggae') 
-    #process_genres(jazz,'jazz')
-    #process_genres(country,'country')
+    process_genres(blues,'blues')
+    process_genres(classical,'classical')
+    process_genres(disco,'disco') 
+    process_genres(rock,'rock') 
+    process_genres(metal,'metal') 
+    process_genres(pop,'pop') 
+    process_genres(reggae,'reggae') 
+    process_genres(jazz,'jazz')
+    process_genres(country,'country')
     process_genres(hiphop,'hiphop')
 
     print("Resimler doğru bir şekilde dosyalara çıkıldı.")   
